@@ -1,3 +1,4 @@
+/*
 package am.bagiryan.sboot.service;
 
 import am.bagiryan.sboot.model.User;
@@ -9,7 +10,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Random;
 
 @Component
 public class MainService {
@@ -19,7 +19,7 @@ public class MainService {
 
     public ModelAndView home(HttpSession session, Cookie cookieUsername) {
         if (cookieUsername != null) {
-            session.setAttribute("user", userRepository.findByUsername(cookieUsername.getValue()));
+            session.setAttribute("user", userRepository.getByUsername(cookieUsername.getValue()));
             return new ModelAndView("redirect:/profile");
         } else {
             return new ModelAndView("index");
@@ -29,12 +29,12 @@ public class MainService {
 
     public ModelAndView login(String username, String password, HttpSession session, HttpServletResponse response, Boolean remember) {
 
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.getByUsernameAndPassword(username, password);
         if (user == null) {
-            return new ModelAndView("index", "login", "username doesn't exist");
+            return new ModelAndView("index", "login", "Wrong login or password");
         }
 
-        if (user.getPassword().equals(password)) {
+        else  {
             session.setAttribute("user", user);
 
             if (remember) {
@@ -48,14 +48,12 @@ public class MainService {
 
             return new ModelAndView("redirect:/profile");
         }
-
-        return new ModelAndView("index", "login", "wrong password");
     }
 
 
     public ModelAndView register(String username, String name, String surname, String password, int age, HttpSession session) {
 
-        if (userRepository.findByUsername(username) != null) {
+        if (userRepository.existsByUsername(username)) {
             return new ModelAndView("register", "reg", "That username already exists");
         } else if (name == null || surname == null || username == null || password == null ||
                 name.equals("") || surname.equals("") || username.equals("") || password.equals("")) {
@@ -91,3 +89,4 @@ public class MainService {
 
     }
 }
+*/

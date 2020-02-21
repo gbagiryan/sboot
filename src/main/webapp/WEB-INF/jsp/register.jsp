@@ -12,12 +12,12 @@
 </head>
 <body>
 <%
-    if (request.getAttribute("reg") != null) {
-        response.getWriter().println(request.getAttribute("reg"));
+    if (request.getAttribute("message") != null) {
+        response.getWriter().println(request.getAttribute("message"));
     }
 %>
 
-<form action="/register" method="post">
+<form action="/user/sign-on" method="post">
 
     <b>
         Name

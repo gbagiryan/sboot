@@ -1,3 +1,4 @@
+/*
 package am.bagiryan.sboot.controller;
 
 import am.bagiryan.sboot.service.ProfileService;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
+@RequestMapping("/user")
 public class ProfileController {
 
     @Autowired
@@ -38,3 +40,4 @@ public class ProfileController {
         return profileService.delete(session, cookieUsername, response);
     }
 }
+*/

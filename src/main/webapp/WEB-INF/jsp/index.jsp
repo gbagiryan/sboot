@@ -28,7 +28,7 @@
     <input type="checkbox" name="remember" value="true"> Remember me    </br>
     <input type="submit" value="Log in"/>
 </form>
-<button onclick="window.location.href = '/register';">Register</button>
+<button onclick="window.location.href = '/goto-register';">Register</button>
 
 </body>
 </html>

@@ -21,7 +21,7 @@ public class User {
     private String username;
     private String password;
     private int age;
-    private int code;
+    private String code;
     private int status;
 
 }

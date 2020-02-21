@@ -1,3 +1,4 @@
+/*
 package am.bagiryan.sboot.service;
 
 import am.bagiryan.sboot.model.User;
@@ -44,3 +45,4 @@ public class ProfileService {
         return new ModelAndView("redirect:/");
     }
 }
+*/

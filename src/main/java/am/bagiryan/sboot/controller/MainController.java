@@ -1,3 +1,4 @@
+/*
 package am.bagiryan.sboot.controller;
 
 import am.bagiryan.sboot.service.MainService;
@@ -64,3 +65,4 @@ public class MainController {
         return mainService.validate(code, session);
     }
 }
+*/
