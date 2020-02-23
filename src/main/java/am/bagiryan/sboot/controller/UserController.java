@@ -22,7 +22,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST, path = "/sign-on")
     public ModelAndView signOn(@RequestParam String username, @RequestParam String name,
                                @RequestParam String surname, @RequestParam String password,
-                               @RequestParam int age) {
+                               @RequestParam(required = false, defaultValue = "0") int age) {
         try {
             User user = new User();
 
@@ -35,6 +35,7 @@ public class UserController {
 
             userService.add(user);
             return new ModelAndView("index", "message", "success");
+
 
         } catch (DuplicateDataException e) {
             return new ModelAndView("register", "message", e.getMessage());

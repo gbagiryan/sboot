@@ -9,8 +9,8 @@
 <html>
 <body>
 <%
-    if (request.getAttribute("login") != null) {
-        response.getWriter().println(request.getAttribute("login"));
+    if (request.getAttribute("message") != null) {
+        response.getWriter().println(request.getAttribute("message"));
     }
 %>
 
