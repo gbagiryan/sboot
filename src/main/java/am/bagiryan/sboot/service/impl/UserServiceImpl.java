@@ -1,5 +1,7 @@
 package am.bagiryan.sboot.service.impl;
 
+import am.bagiryan.sboot.dto.ConfirmDto;
+import am.bagiryan.sboot.dto.RecoverPasswordDto;
 import am.bagiryan.sboot.dto.VerifyDto;
 import am.bagiryan.sboot.exceptions.DuplicateDataException;
 import am.bagiryan.sboot.exceptions.NotFoundException;
@@ -20,6 +22,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private MailSenderClient mailSender;
 
+
     @Override
     public void add(User user) throws DuplicateDataException {
         boolean exists = userRepository.existsByUsername(user.getUsername());
@@ -30,18 +33,39 @@ public class UserServiceImpl implements UserService {
         user.setStatus(-1);
         user.setCode(Generator.randomString(5));
         userRepository.save(user);
-        mailSender.send(user.getUsername(), "verify", "verification code is "+ user.getCode() );
+        mailSender.send(user.getUsername(), "verify", "verification code is " + user.getCode());
     }
 
     @Override
     public void verify(VerifyDto verifyDto) throws NotFoundException, ForbiddenException {
         User user = userRepository.getByUsername(verifyDto.getUsername());
-        if (user==null){
-            throw new NotFoundException("Username doesn't exist");
-        }
-        if (user.getCode() != verifyDto.getCode()){
+        NotFoundException.check(user == null, "Username doesn't exist");
+
+        if (user.getCode() != verifyDto.getCode()) {
             throw new ForbiddenException("Wrong verification code");
         }
         user.setStatus(0);
+    }
+
+    @Override
+    public void recoverPassword(RecoverPasswordDto dto) throws NotFoundException {
+        NotFoundException.check(!userRepository.existsByUsername(dto.getUsername()), "Username doesn't exist");
+        User user = userRepository.getByUsername(dto.getUsername());
+        user.setCode(Generator.randomString(5));
+        userRepository.save(user);
+        mailSender.send(user.getUsername(), "password change", "code is " + user.getCode());
+    }
+
+    @Override
+    public void confirmRecovery(ConfirmDto confirmDto) throws NotFoundException, ForbiddenException {
+        boolean exists = userRepository.existsByUsername(confirmDto.getUsername());
+        NotFoundException.check(!exists, "Username doesn't exist");
+        User user = userRepository.getByUsername(confirmDto.getUsername());
+        if (!user.getCode().equals(confirmDto.getCode())) {
+            throw new ForbiddenException("Wrong verification code");
+        }
+        user.setPassword(confirmDto.getPassword());
+        userRepository.save(user);
+
     }
 }

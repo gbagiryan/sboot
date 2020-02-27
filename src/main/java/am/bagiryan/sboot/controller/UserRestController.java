@@ -1,5 +1,7 @@
 package am.bagiryan.sboot.controller;
 
+import am.bagiryan.sboot.dto.ConfirmDto;
+import am.bagiryan.sboot.dto.RecoverPasswordDto;
 import am.bagiryan.sboot.dto.VerifyDto;
 import am.bagiryan.sboot.exceptions.DuplicateDataException;
 import am.bagiryan.sboot.exceptions.NotFoundException;
@@ -59,6 +61,22 @@ public class UserRestController {
         } catch (Throwable throwable) {
             return ResponseEntity.status(500).build();
         }
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/recover-password")
+    public ResponseEntity recover(@RequestBody RecoverPasswordDto dto) throws NotFoundException {
+
+            userService.recoverPassword(dto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/confirm-recovery")
+    public ResponseEntity confirmRecovery(@RequestBody ConfirmDto confirmDto) throws NotFoundException, ForbiddenException {
+
+        userService.confirmRecovery(confirmDto);
+        return ResponseEntity.ok().build();
+
     }
 
 }

@@ -1,5 +1,7 @@
 package am.bagiryan.sboot.service;
 
+import am.bagiryan.sboot.dto.ConfirmDto;
+import am.bagiryan.sboot.dto.RecoverPasswordDto;
 import am.bagiryan.sboot.dto.VerifyDto;
 import am.bagiryan.sboot.exceptions.DuplicateDataException;
 import am.bagiryan.sboot.exceptions.NotFoundException;
@@ -12,4 +14,7 @@ public interface UserService {
 
     void verify(VerifyDto verifyDto) throws NotFoundException, ForbiddenException;
 
+    void recoverPassword(RecoverPasswordDto dto) throws NotFoundException;
+
+    void confirmRecovery(ConfirmDto confirmDto) throws NotFoundException, ForbiddenException;
 }
