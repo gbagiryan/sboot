@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 
 @Controller
 @RequestMapping("/user")
@@ -41,9 +44,7 @@ public class UserController {
             return new ModelAndView("register", "message", e.getMessage());
         } catch (Throwable throwable) {
             return new ModelAndView("register", "message", "unexpected error");
-
         }
-
 
     }
 

@@ -26,10 +26,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void add(User user) throws DuplicateDataException {
         boolean exists = userRepository.existsByUsername(user.getUsername());
-        if (exists) {
-            throw new DuplicateDataException("user.by.username.exists");
-        }
-
+        DuplicateDataException.check(exists, "user.by.username.exists");
         user.setStatus(-1);
         user.setCode(Generator.randomString(5));
         userRepository.save(user);
@@ -40,10 +37,7 @@ public class UserServiceImpl implements UserService {
     public void verify(VerifyDto verifyDto) throws NotFoundException, ForbiddenException {
         User user = userRepository.getByUsername(verifyDto.getUsername());
         NotFoundException.check(user == null, "Username doesn't exist");
-
-        if (user.getCode() != verifyDto.getCode()) {
-            throw new ForbiddenException("Wrong verification code");
-        }
+        ForbiddenException.check(!user.getCode().equals(verifyDto.getCode()), "Wrong verification code");
         user.setStatus(0);
     }
 
@@ -61,11 +55,8 @@ public class UserServiceImpl implements UserService {
         boolean exists = userRepository.existsByUsername(confirmDto.getUsername());
         NotFoundException.check(!exists, "Username doesn't exist");
         User user = userRepository.getByUsername(confirmDto.getUsername());
-        if (!user.getCode().equals(confirmDto.getCode())) {
-            throw new ForbiddenException("Wrong verification code");
-        }
+        ForbiddenException.check(!user.getCode().equals(confirmDto.getCode()), "Wrong verification code");
         user.setPassword(confirmDto.getPassword());
         userRepository.save(user);
-
     }
 }

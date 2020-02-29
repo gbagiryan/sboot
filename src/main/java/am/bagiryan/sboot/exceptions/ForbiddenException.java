@@ -8,4 +8,10 @@ public class ForbiddenException extends Exception {
         public ForbiddenException(String message) {
             super(message);
         }
+
+    public static void check(boolean expresion, String message) throws ForbiddenException {
+        if (expresion){
+            throw new ForbiddenException(message);
+        }
+    }
 }

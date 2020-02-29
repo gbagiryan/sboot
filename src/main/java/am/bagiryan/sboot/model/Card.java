@@ -9,24 +9,15 @@ import javax.validation.constraints.NotEmpty;
 @Data
 @Entity
 @Component
-@Table(name = "user", schema = "test")
-public class User {
-
+@Table(name = "card", schema = "test")
+public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false, length = 32, unique = true)
     private long id;
 
-    private String name;
-    private String surname;
-    private String username;
-    private String password;
-    private int age;
-    private String code;
-    private int status;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Card card;
+    private String ownerName;
+    private String number;
+    private int cvv;
 
 }

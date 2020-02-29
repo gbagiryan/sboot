@@ -29,7 +29,7 @@ public class UserRestController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/sign-on")
-    public ResponseEntity resp2(@RequestBody User user) {
+    public ResponseEntity signOn(@RequestBody User user) {
 
         try {
             userService.add(user);

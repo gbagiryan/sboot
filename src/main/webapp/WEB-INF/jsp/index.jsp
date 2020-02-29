@@ -14,7 +14,7 @@
     }
 %>
 
-<form action="/login" method="post">
+<form action="/user/sign-in" method="post">
     <b>
         login
     </b></br>
