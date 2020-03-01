@@ -8,6 +8,8 @@ import am.bagiryan.sboot.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CardServiceImpl implements CardService {
 
@@ -26,8 +28,7 @@ public class CardServiceImpl implements CardService {
     public void delete(Card card) throws NotFoundException {
         boolean exists = cardRepository.existsByNumber(card.getNumber());
         NotFoundException.check(!exists, "card.by.number.doesn't.exist");
-        Card dbCard = cardRepository.getByNumber(card.getNumber());
-        cardRepository.delete(dbCard);
+        cardRepository.delete(cardRepository.getByNumber(card.getNumber()));
     }
 
     @Override
@@ -35,6 +36,16 @@ public class CardServiceImpl implements CardService {
         boolean exists = cardRepository.existsByNumber(card.getNumber());
         NotFoundException.check(!exists, "card.by.number.doesn't.exist");
         return cardRepository.getByNumber(card.getNumber());
+    }
+
+    @Override
+    public List<Card> getAll() {
+        return cardRepository.findAll();
+    }
+
+    @Override
+    public Card getById(int id) {
+        return cardRepository.getById(id);
     }
 
 }

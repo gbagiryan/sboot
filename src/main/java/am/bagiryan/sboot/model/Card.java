@@ -17,6 +17,7 @@ public class Card {
     private long id;
 
     private String ownerName;
+    @Column(unique = true)
     private String number;
     private int cvv;
 

@@ -6,6 +6,7 @@ import am.bagiryan.sboot.dto.VerifyDto;
 import am.bagiryan.sboot.exceptions.DuplicateDataException;
 import am.bagiryan.sboot.exceptions.NotFoundException;
 import am.bagiryan.sboot.exceptions.ForbiddenException;
+import am.bagiryan.sboot.model.Status;
 import am.bagiryan.sboot.model.User;
 import am.bagiryan.sboot.repository.UserRepository;
 import am.bagiryan.sboot.service.UserService;
@@ -13,6 +14,7 @@ import am.bagiryan.sboot.util.Generator;
 import am.bagiryan.sboot.util.MailSenderClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,10 +26,12 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @Transactional
+
     public void add(User user) throws DuplicateDataException {
         boolean exists = userRepository.existsByUsername(user.getUsername());
         DuplicateDataException.check(exists, "user.by.username.exists");
-        user.setStatus(-1);
+        user.setStatus(Status.UNVERIFIED);
         user.setCode(Generator.randomString(5));
         userRepository.save(user);
         mailSender.send(user.getUsername(), "verify", "verification code is " + user.getCode());
@@ -38,10 +42,11 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.getByUsername(verifyDto.getUsername());
         NotFoundException.check(user == null, "Username doesn't exist");
         ForbiddenException.check(!user.getCode().equals(verifyDto.getCode()), "Wrong verification code");
-        user.setStatus(0);
+        user.setStatus(Status.ACTIVE);
     }
 
     @Override
+    @Transactional
     public void recoverPassword(RecoverPasswordDto dto) throws NotFoundException {
         NotFoundException.check(!userRepository.existsByUsername(dto.getUsername()), "Username doesn't exist");
         User user = userRepository.getByUsername(dto.getUsername());

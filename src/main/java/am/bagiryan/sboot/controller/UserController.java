@@ -1,6 +1,7 @@
 package am.bagiryan.sboot.controller;
 
 import am.bagiryan.sboot.exceptions.DuplicateDataException;
+import am.bagiryan.sboot.model.Status;
 import am.bagiryan.sboot.model.User;
 import am.bagiryan.sboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class UserController {
             user.setUsername(username);
             user.setPassword(password);
             user.setAge(age);
-            user.setStatus(-1);
+            user.setStatus(Status.UNVERIFIED);
 
             userService.add(user);
             return new ModelAndView("index", "message", "success");

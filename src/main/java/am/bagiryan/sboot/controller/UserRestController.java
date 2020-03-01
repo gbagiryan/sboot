@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/v2/user")
 public class UserRestController {
@@ -29,17 +31,9 @@ public class UserRestController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/sign-on")
-    public ResponseEntity signOn(@RequestBody User user) {
-
-        try {
-            userService.add(user);
-            return ResponseEntity.ok().build();
-        } catch (DuplicateDataException e) {
-            return ResponseEntity.status(409).build();
-        } catch (Throwable throwable) {
-            return ResponseEntity.status(500).build();
-
-        }
+    public ResponseEntity signOn(@RequestBody @Valid User user ) throws DuplicateDataException {
+        userService.add(user);
+        return ResponseEntity.ok().build();
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/username")
@@ -50,23 +44,16 @@ public class UserRestController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/verify")
-    public ResponseEntity verification(@RequestBody VerifyDto verifyDto) {
-        try {
-            userService.verify(verifyDto);
-            return ResponseEntity.ok().build();
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        } catch (ForbiddenException e) {
-            return ResponseEntity.status(406).build();
-        } catch (Throwable throwable) {
-            return ResponseEntity.status(500).build();
-        }
+    public ResponseEntity verification(@RequestBody VerifyDto verifyDto) throws NotFoundException, ForbiddenException {
+
+        userService.verify(verifyDto);
+        return ResponseEntity.ok().build();
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/recover-password")
     public ResponseEntity recover(@RequestBody RecoverPasswordDto dto) throws NotFoundException {
 
-            userService.recoverPassword(dto);
+        userService.recoverPassword(dto);
 
         return ResponseEntity.ok().build();
     }

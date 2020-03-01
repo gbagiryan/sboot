@@ -9,4 +9,6 @@ public interface CardRepository extends JpaRepository<Card, Long> {
     Boolean existsByNumber(String number);
     Boolean existsByOwnerName(String ownerName);
 
+    Card getById(long id);
+
 }
