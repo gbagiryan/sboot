@@ -49,4 +49,10 @@ public class CardRestController {
         return ResponseEntity.ok(card);
     }
 
+    @PutMapping
+    public ResponseEntity<Object> update(@RequestBody Card card) throws NotFoundException {
+        cardService.update(card);
+        return ResponseEntity.ok().build();
+    }
+
 }

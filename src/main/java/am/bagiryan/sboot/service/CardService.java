@@ -16,4 +16,7 @@ public interface CardService {
     List<Card> getAll();
 
     Card getById(int id);
+
+
+    void update(Card card) throws NotFoundException;
 }

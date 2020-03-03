@@ -48,4 +48,15 @@ public class CardServiceImpl implements CardService {
         return cardRepository.getById(id);
     }
 
+    @Override
+    public void update(Card card) throws NotFoundException {
+        boolean exists = cardRepository.existsByNumberAndIdNot(card.getNumber(), card.getId());
+        NotFoundException.check(!exists, "card.by.number.and.notID.doesn't.exist");
+        Card dbCard = cardRepository.getById(card.getId());
+        dbCard.setOwnerName(card.getOwnerName());
+        dbCard.setNumber(card.getNumber());
+        dbCard.setCvv(card.getCvv());
+        cardRepository.save(card);
+    }
+
 }
